@@ -22,8 +22,32 @@ buscarArtistaPorNome nomeAlvo = do
   resultado <- AServ.filtrarArtistasPorNome nomeAlvo
   return (map (\artista -> (show artista)) resultado)
 
+filtrarArtistasPorFuncao:: String -> IO [String]
+filtrarArtistasPorFuncao funcao = do
+  resultado <- AServ.filtrarArtistasPorFuncao funcao
+  return (map (\artista -> (show artista)) resultado)
+
+topArtistas:: Int -> IO [String]
+topArtistas xMelhores = return [("")]
+
+topMusicas:: Int -> IO [String]
+topMusicas xMelhores = return [("")]
+
+-- Funcoes Banda
+
 buscarBanda:: String -> IO String
 buscarBanda nomeBanda = return ("")
+
+topBandas:: Int -> IO [String]
+topBandas xMelhores = return [("")]
+
+filtrarBandasPorInstrumento:: String -> IO [String]
+filtrarBandasPorInstrumento instrumento = return [("")]
+
+filtrarBandasPorGenero:: String -> IO [String]
+filtrarBandasPorGenero genero = return [("")]
+
+--Funcoes Musica
 
 buscarMusica:: String -> IO String
 buscarMusica nomeMusica = return ("")
@@ -31,38 +55,9 @@ buscarMusica nomeMusica = return ("")
 filtrarMusicasPorTrecho:: String -> IO [String]
 filtrarMusicasPorTrecho trecho = return [("")]
 
-filtrarBandasPorGenero:: String -> IO [String]
-filtrarBandasPorGenero genero = return [("")]
 
 filtrarMusicasPorInstrumento:: String -> IO [String]
 filtrarMusicasPorInstrumento instrumento = return [("")]
 
 filtrarMusicasPorRitmo:: String -> IO [String]
 filtrarMusicasPorRitmo ritmo = return [("")]
-
-filtrarArtistasPorFuncao:: String -> IO [String]
-filtrarArtistasPorFuncao funcao = do
-  resultado <- AServ.filtrarArtistasPorFuncao funcao
-  return (map (\artista -> (show artista)) resultado)
-
-filtrarBandasPorInstrumento:: String -> IO [String]
-filtrarBandasPorInstrumento instrumento = return [("")]
-
-topArtistas:: Int -> IO [String]
-topArtistas xMelhores = return [("")]
-
-topBandas:: Int -> IO [String]
-topBandas xMelhores = return [("")]
-
-topMusicas:: Int -> IO [String]
-topMusicas xMelhores = return [("")]
-
--- Funcoes Banda
-
-
-
-
-
-
-
---Funcoes Musica

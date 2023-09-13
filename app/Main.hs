@@ -14,36 +14,42 @@ main = do
   if resultado == "0" then print ("Até mais!")
   else do
     case resultado of
-      "11" -> do
+      "11" -> do --Cadastrar Artista
         print ("###")
-      "12" -> do
+      "12" -> do --Cadastrar Banda
         print ("###")
-      "13" -> do
+      "13" -> do --Cadastrar Musica
         print ("###")
-      "14" -> do
+      "14" -> do --Adicionar Integrantes na Banda
         print ("###")
-      "15" -> do
+      "15" -> do --Remover Integrantes na Banda
         print ("###")
-      "21" -> do
+      "21" -> do --Buscar Artista
         putStrLn("Informe o nome do artista:")
         nome <- getLine
-        busca <- LLS.buscarArtistaPorNome nome
-        putStrLn (show busca)
-      "22" -> do
+        resultado <- LLS.buscarArtistaPorNome nome
+        putStrLn (show resultado)
+      "22" -> do --Buscar Banda
+        putStrLn("Informe o nome da banda:")
+        nome <- getLine
+        resultado <- LLS.buscarBanda nome
+        putStrLn (resultado)
+      "23" -> do --Buscar Musica
+        putStrLn("Informe o nome da musica:")
+        nome <- getLine
+        resultado <- LLS.buscarMusica nome
+        putStrLn (resultado)
+      "24" -> do --Filtrar Artistas
+        menuFiltrarArtistas
+      "25" -> do --Filtrar Bandas
+        menuFiltrarBandas
+      "26" -> do --Filtrar Musicas
         print ("###")
-      "23" -> do
+      "27" -> do --Top Artistas
         print ("###")
-      "24" -> do
+      "28" -> do --Top Bandas
         print ("###")
-      "25" -> do
-        print ("###")
-      "26" -> do
-        print ("###")
-      "27" -> do
-        print ("###")
-      "28" -> do
-        print ("###")
-      "29" -> do
+      "29" -> do --Top Musicas
         print ("###")
       
 
@@ -74,7 +80,7 @@ menuInicial = do
           menuDashBoard
         0 -> return ("0")
     Nothing -> do
-      putStrLn("\n\nOpção errada, por favor digite uma opcao valida.\n\n")
+      putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
       menuInicial
 
 menuCadastros:: String -> IO (String)
@@ -96,7 +102,7 @@ menuBuscas num1 = do
   putStrLn("2 - Buscar Banda")
   putStrLn("3 - Buscar Musica")
   putStrLn("----------")
-  putStrLn("4 - Filtrar Artistas")
+  putStrLn("4 - Filtrar artistas")
   putStrLn("5 - Filtrar Bandas")
   putStrLn("6 - Filtrar Musicas")
   putStrLn("----------")
@@ -120,9 +126,42 @@ menuBuscas num1 = do
         9 -> return (num1++"9")
 
     Nothing -> do
-      putStrLn("\n\nOpção errada, por favor digite uma opcao valida.\n\n")
+      putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
       menuBuscas num1
 
 
 menuDashBoard:: IO (String)
 menuDashBoard = return ("Em Breve!")
+
+menuFiltrarArtistas:: IO()
+menuFiltrarArtistas = do
+  putStrLn("-----Filtrar Artistas-----")
+  putStrLn("Opcao unica - filtrar artista por funcao")
+  putStrLn("\nIndique a funcao a ser filtrada:")
+  funcao <- getLine
+  resultado <- LLS.filtrarArtistasPorFuncao funcao
+  putStrLn (show resultado)
+
+menuFiltrarBandas:: IO()
+menuFiltrarBandas = do
+  putStrLn("-----Filtrar Bandas-----")
+  putStrLn("1 - Por genero")
+  putStrLn("2 - Por instrumento")
+  entrada <- getLine
+  let entradaInt = readMaybe entrada :: Maybe Int
+  case entradaInt of
+    Just numero -> do
+      case numero of
+        1 -> do
+          putStrLn("Indique o genero a ser filtrado:")
+          genero <- getLine
+          resultado <- LLS.filtrarBandasPorGenero genero
+          putStrLn (show resultado)
+        2 -> do
+          putStrLn("Indique o instrumento a ser filtrado:")
+          genero <- getLine
+          resultado <- LLS.filtrarBandasPorInstrumento genero
+          putStrLn (show resultado)
+    Nothing -> do
+      putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
+      menuFiltrarBandas

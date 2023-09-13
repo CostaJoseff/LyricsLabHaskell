@@ -45,10 +45,7 @@ executable Projeto-exe
       Artistas.ArtistaRep
       Artistas.ArtistaService
       LyricsLibService
-      Musicas.MusicaRep
-      Musicas.MusicaService
       Objetos.Artista
-      Objetos.Musica
       Paths_Projeto
   hs-source-dirs:
       app
