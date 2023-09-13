@@ -35,6 +35,8 @@ library
       aeson
     , base >=4.7 && <5
     , bytestring
+    , directory
+    , time
   default-language: Haskell2010
 
 executable Projeto-exe
@@ -43,7 +45,10 @@ executable Projeto-exe
       Artistas.ArtistaRep
       Artistas.ArtistaService
       LyricsLibService
+      Musicas.MusicaRep
+      Musicas.MusicaService
       Objetos.Artista
+      Objetos.Musica
       Paths_Projeto
   hs-source-dirs:
       app
@@ -53,6 +58,8 @@ executable Projeto-exe
     , aeson
     , base >=4.7 && <5
     , bytestring
+    , directory
+    , time
   default-language: Haskell2010
 
 test-suite Projeto-test
@@ -68,4 +75,6 @@ test-suite Projeto-test
     , aeson
     , base >=4.7 && <5
     , bytestring
+    , directory
+    , time
   default-language: Haskell2010

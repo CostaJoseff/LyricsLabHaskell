@@ -4,14 +4,14 @@ import qualified Data.ByteString.Lazy as BS
 import Objetos.Musica
 import Data.Aeson
 
-setMusica :: [Musica] -> IO ()
-setMusica musicas = do
+set :: [Musica] -> IO ()
+set musicas = do
   codificarArquivoMusica musicas
 
 codificarArquivoMusica :: [Musica] -> IO ()
 codificarArquivoMusica musicas = BS.writeFile "../musica.json" (encode musicas)
 
-getMusica :: IO (Maybe [Musica])
-getMusica = do
+get :: IO (Maybe [Musica])
+get = do
   json <- BS.readFile "../musica.json"
   return (decode json)
