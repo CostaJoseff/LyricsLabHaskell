@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveGeneric #-}
 module Objetos.Banda where
 
 import Data.Aeson

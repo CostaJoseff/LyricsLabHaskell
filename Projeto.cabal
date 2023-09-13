@@ -44,8 +44,11 @@ executable Projeto-exe
   other-modules:
       Artistas.ArtistaRep
       Artistas.ArtistaService
+      Bandas.BandaRepository
+      Bandas.BandaService
       LyricsLibService
       Objetos.Artista
+      Objetos.Banda
       Paths_Projeto
   hs-source-dirs:
       app
