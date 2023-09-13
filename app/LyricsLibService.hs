@@ -6,6 +6,11 @@ import System.IO.Error
 import Artistas.ArtistaService as AServ
 import Objetos.Artista
 
+import Bandas.BandaService
+
+
+-- Funcoes Artistas
+
 buscarArtistaPorID:: String -> IO String
 buscarArtistaPorID idAlvo = do
   artista <- AServ.getArtista idAlvo
@@ -51,3 +56,13 @@ topBandas xMelhores = return [("")]
 
 topMusicas:: Int -> IO [String]
 topMusicas xMelhores = return [("")]
+
+-- Funcoes Banda
+
+
+
+
+
+
+
+--Funcoes Musica
