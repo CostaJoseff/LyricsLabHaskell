@@ -6,18 +6,26 @@ import LyricsLibService as LLS
 import Control.Exception
 import Text.Read (readMaybe)
 import Control.Concurrent (threadDelay)
+import Data.Char
+import Data.List.Split
 
 main::IO()
 main = do
   apresentacaoInicial
+  fluxoPrincipal
+
+fluxoPrincipal:: IO()
+fluxoPrincipal = do
   resultado <- menuInicial
   if resultado == "0" then print ("Até mais!")
   else do
     case resultado of
       "11" -> do --Cadastrar Artista
-        print ("###")
+        menuCadastrarArtista
+        fluxoPrincipal
       "12" -> do --Cadastrar Banda
-        print ("###")
+        menuCadastrarBanda
+        fluxoPrincipal
       "13" -> do --Cadastrar Musica
         print ("###")
       "14" -> do --Adicionar Integrantes na Banda
@@ -29,28 +37,28 @@ main = do
         nome <- getLine
         resultado <- LLS.buscarArtistaPorNome nome
         putStrLn (show resultado)
-        main
+        fluxoPrincipal
       "22" -> do --Buscar Banda
         putStrLn("Informe o nome da banda:")
         nome <- getLine
         resultado <- LLS.buscarBanda nome
         putStrLn (resultado)
-        main
+        fluxoPrincipal
       "23" -> do --Buscar Musica
         putStrLn("Informe o nome da musica:")
         nome <- getLine
         resultado <- LLS.buscarMusica nome
         putStrLn (resultado)
-        main
+        fluxoPrincipal
       "24" -> do --Filtrar Artistas
         menuFiltrarArtistas
-        main
+        fluxoPrincipal
       "25" -> do --Filtrar Bandas
         menuFiltrarBandas
-        main
+        fluxoPrincipal
       "26" -> do --Filtrar Musicas
         menuFiltrarMusicas
-        main
+        fluxoPrincipal
       "27" -> do --Top Artistas
         putStrLn("Informe a quantidade de artistas que devem aparecer no TOP:")
         quantidade <- getLine
@@ -60,8 +68,8 @@ main = do
             artistasTop <- LLS.topArtistas numero
             putStrLn (show artistasTop)
           Nothing -> do
-            putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
-            main
+            putStrLn("\n\nOpcao invalida!\n\n")
+            fluxoPrincipal
       "28" -> do --Top Bandas
         putStrLn("Informe a quantidade de bandas que devem aparecer no TOP:")
         quantidade <- getLine
@@ -71,8 +79,8 @@ main = do
             bandasTop <- LLS.topBandas numero
             putStrLn (show bandasTop)
           Nothing -> do
-            putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
-            main
+            putStrLn("\n\nOpcao invalida!\n\n")
+            fluxoPrincipal
       "29" -> do --Top Musicas
         putStrLn("Informe a quantidade de musicas que devem aparecer no TOP:")
         quantidade <- getLine
@@ -82,9 +90,8 @@ main = do
             musicasTop <- LLS.topMusicas numero
             putStrLn (show musicasTop)
           Nothing -> do
-            putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
-            main
-      
+            putStrLn("\n\nOpcao invalida!\n\n")
+            fluxoPrincipal
 
 apresentacaoInicial:: IO()
 apresentacaoInicial = do
@@ -112,8 +119,11 @@ menuInicial = do
         3 -> do
           menuDashBoard
         0 -> return ("0")
+        _ -> do
+          putStrLn("\n\nOpcao invalida!\n\n")
+          menuInicial
     Nothing -> do
-      putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
+      putStrLn("\n\nOpcao invalida!\n\n")
       menuInicial
 
 menuCadastros:: String -> IO (String)
@@ -126,7 +136,22 @@ menuCadastros num1 = do
   putStrLn("4 - Adicionar Integrantes na Banda")
   putStrLn("5 - Remover Integrantes na Banda")
   putStrLn("----------\n\n")
-  return ("###")
+  entrada <- getLine
+  let entradaInt = readMaybe entrada :: Maybe Int
+  case entradaInt of
+    Just numero -> do
+      case numero of
+        1 -> return (num1++"1")
+        2 -> return (num1++"2")
+        3 -> return (num1++"3")
+        4 -> return (num1++"4")
+        5 -> return (num1++"5")
+        _ -> do
+          putStrLn("\n\nOpcao invalida!\n\n")
+          menuCadastros num1
+    Nothing -> do
+      putStrLn("\n\nOpcao invalida!\n\n")
+      menuCadastros num1
 
 menuBuscas:: String -> IO (String)
 menuBuscas num1 = do
@@ -157,9 +182,12 @@ menuBuscas num1 = do
         7 -> return (num1++"7")
         8 -> return (num1++"8")
         9 -> return (num1++"9")
+        _ -> do
+          putStrLn("\n\nOpcao invalida!\n\n")
+          menuBuscas num1
 
     Nothing -> do
-      putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
+      putStrLn("\n\nOpcao invalida!\n\n")
       menuBuscas num1
 
 
@@ -195,8 +223,11 @@ menuFiltrarBandas = do
           genero <- getLine
           resultado <- LLS.filtrarBandasPorInstrumento genero
           putStrLn (show resultado)
+        _ -> do
+          putStrLn("\n\nOpcao invalida!\n\n")
+          menuFiltrarBandas
     Nothing -> do
-      putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
+      putStrLn("\n\nOpcao invalida!\n\n")
       menuFiltrarBandas
 
 menuFiltrarMusicas:: IO ()
@@ -225,7 +256,96 @@ menuFiltrarMusicas = do
           trecho <-getLine
           resultado <- LLS.filtrarMusicasPorTrecho trecho
           putStrLn (show resultado)
+        _ -> do
+          putStrLn("\n\nOpcao invalida!\n\n")
+          menuFiltrarMusicas
 
     Nothing -> do
-      putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
+      putStrLn("\n\nOpcao invalida!\n\n")
       menuFiltrarMusicas
+
+menuCadastrarArtista:: IO ()
+menuCadastrarArtista = do
+  putStrLn("Nome do artista")
+  nome <- getLine
+  putStrLn("Nome da Banda Atual")
+  nomeBanda <- getLine
+  putStrLn("Participou de outras Bandas? (s/n)")
+  resposta <- getLine
+  case (map toUpper resposta) of
+    "S" -> do
+      putStrLn("Digite o nome das bandas e ao acabar digite ~~fim (com ~~):")
+      bandasAnteriores <- obterListaDeBandas [] 1
+      putStrLn("Informe a funcao do artista:")
+      funcao <- getLine
+      LLS.cadastrarArtista [nome, nomeBanda, funcao] bandasAnteriores
+    "N" -> do
+      putStrLn("Informe a funcao do artista:")
+      funcao <- getLine
+      LLS.cadastrarArtista [nome, nomeBanda, funcao] []
+    _ -> do
+      putStrLn("Opcao invalida, abortando cadastro!")
+
+obterListaDeBandas:: [String] -> Int -> IO [String]
+obterListaDeBandas resultado indice = do
+  putStrLn("Banda " ++ (show indice) ++ ":")
+  banda <- getLine
+  if banda == "~~fim" then return (resultado)
+  else obterListaDeBandas (banda:resultado) (indice+1)
+
+menuCadastrarBanda:: IO ()
+menuCadastrarBanda = do
+  putStrLn("Nome da banda:")
+  nome <- getLine
+  artistasAtuais <- obterComposicaoAtual
+  artistasAnteriores <- menuArtistasAnteriores
+  musicas <- menuMusicas
+  instrumentos <- obterInstrumentos
+  putStrLn("Data da fundacao da banda:")
+  dataFund <- getLine
+  putStrLn("Genero geral da banda:")
+  genero <- getLine
+  LSS.cadastrarBanda [nome, dataFund, genero] artistasAtuais artistasAnteriores musicas instrumentos
+
+
+obterComposicaoAtual::[String]
+obterComposicaoAtual = do
+  putStrLn("Insira os ID's dos artistas separados por espaco")
+  idsArtistas <- getLine
+  return (splitOn " " idsArtistas)
+
+obterInstrumentos:: IO [String]
+obterInstrumentos = do
+  putStrLn("Insira os instrumentos utilizados pela banda separados por espaco")
+  instrumentos <- getLine
+  return (splitOn " " instrumentos)
+
+menuArtistasAnteriores:: IO [String]
+menuArtistasAnteriores = do
+  putStrLn("A banda ja possuiu outros artistas alem dos atuais? (s/n)")
+  resposta <- getLine
+  case (map toUpper resposta) of
+    "S" -> do
+      putStrLn("Insira os ID's dos artistas separados por espaco")
+      idsArtistas <- getLine
+      return (splitOn " " idsArtistas)
+    "N" -> do
+      return []
+    _ -> do
+      putStrLn("Opcao invalida!")
+      menuArtistasAnteriores
+
+menuMusicas:: IO [String]
+menuMusicas = do
+  putStrLn("A banda possui musicas? (s/n)")
+  resposta <- getLine
+  case (map toUpper resposta) of
+    "S" -> do
+      putStrLn("Insira os ID's das musicas separadas por espaco")
+      idsMusicas <- getLine
+      return (splitOn " " idsMusicas)
+    "N" -> do
+      return []
+    _ -> do
+      putStrLn("Opcao invalida!")
+      menuMusicas

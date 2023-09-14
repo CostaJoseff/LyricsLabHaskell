@@ -51,6 +51,9 @@ filtrarBandasPorInstrumento instrumento = return [("")]
 filtrarBandasPorGenero:: String -> IO [String]
 filtrarBandasPorGenero genero = return [("")]
 
+cadastrarBanda:: [String] -> [String] -> [String] -> [String] -> [String] -> IO ()
+cadastrarBanda dados artistasAtuais artistasAnteriores musicas instrumentos
+
 --Funcoes Musica
 
 buscarMusica:: String -> IO String
