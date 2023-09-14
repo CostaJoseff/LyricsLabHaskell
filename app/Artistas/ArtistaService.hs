@@ -6,8 +6,8 @@ import Objetos.Artista
 {-Função Pública-}
 len:: IO Int
 len = do
-  let lista = getArtistas
-  return (length lista)
+  artistas <- getArtistas
+  return (length artistas)
 
 {-Função Pública-}
 setArtista:: Artista -> IO()

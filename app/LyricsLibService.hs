@@ -2,6 +2,7 @@ module LyricsLibService where
 
 import Control.Exception
 import System.IO.Error
+import Text.Read (readMaybe)
 
 import Artistas.ArtistaService as AServ
 import Objetos.Artista
@@ -30,10 +31,10 @@ filtrarArtistasPorFuncao funcao = do
 topArtistas:: Int -> IO [String]
 topArtistas xMelhores = return [("")]
 
-cadastrarArtista:: [String] -> IO ()
-cadastrarArtista dados = do
-  let novoID = AServ.len + 1
-  let novoArtista = Artista novoID (dados!!1) (dados!!2) (dados!!3) (dados!!4)
+cadastrarArtista:: [String] -> [String] -> IO ()
+cadastrarArtista dados bandas = do
+  numero <- AServ.len
+  let novoArtista = Artista (show(numero+1)) (dados!!0) (dados!!1) bandas (dados!!2)
   AServ.setArtista novoArtista
 
 -- Funcoes Banda
