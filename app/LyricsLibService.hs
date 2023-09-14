@@ -30,8 +30,11 @@ filtrarArtistasPorFuncao funcao = do
 topArtistas:: Int -> IO [String]
 topArtistas xMelhores = return [("")]
 
-topMusicas:: Int -> IO [String]
-topMusicas xMelhores = return [("")]
+cadastrarArtista:: [String] -> IO ()
+cadastrarArtista dados = do
+  let novoID = AServ.len + 1
+  let novoArtista = Artista novoID (dados!!1) (dados!!2) (dados!!3) (dados!!4)
+  AServ.setArtista novoArtista
 
 -- Funcoes Banda
 
@@ -55,9 +58,11 @@ buscarMusica nomeMusica = return ("")
 filtrarMusicasPorTrecho:: String -> IO [String]
 filtrarMusicasPorTrecho trecho = return [("")]
 
-
 filtrarMusicasPorInstrumento:: String -> IO [String]
 filtrarMusicasPorInstrumento instrumento = return [("")]
 
 filtrarMusicasPorRitmo:: String -> IO [String]
 filtrarMusicasPorRitmo ritmo = return [("")]
+
+topMusicas:: Int -> IO [String]
+topMusicas xMelhores = return [("")]

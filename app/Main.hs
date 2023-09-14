@@ -29,28 +29,61 @@ main = do
         nome <- getLine
         resultado <- LLS.buscarArtistaPorNome nome
         putStrLn (show resultado)
+        main
       "22" -> do --Buscar Banda
         putStrLn("Informe o nome da banda:")
         nome <- getLine
         resultado <- LLS.buscarBanda nome
         putStrLn (resultado)
+        main
       "23" -> do --Buscar Musica
         putStrLn("Informe o nome da musica:")
         nome <- getLine
         resultado <- LLS.buscarMusica nome
         putStrLn (resultado)
+        main
       "24" -> do --Filtrar Artistas
         menuFiltrarArtistas
+        main
       "25" -> do --Filtrar Bandas
         menuFiltrarBandas
+        main
       "26" -> do --Filtrar Musicas
-        print ("###")
+        menuFiltrarMusicas
+        main
       "27" -> do --Top Artistas
-        print ("###")
+        putStrLn("Informe a quantidade de artistas que devem aparecer no TOP:")
+        quantidade <- getLine
+        let quantidadeInt = readMaybe quantidade :: Maybe Int
+        case quantidadeInt of
+          Just numero -> do
+            artistasTop <- LLS.topArtistas numero
+            putStrLn (show artistasTop)
+          Nothing -> do
+            putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
+            main
       "28" -> do --Top Bandas
-        print ("###")
+        putStrLn("Informe a quantidade de bandas que devem aparecer no TOP:")
+        quantidade <- getLine
+        let quantidadeInt = readMaybe quantidade :: Maybe Int
+        case quantidadeInt of
+          Just numero -> do
+            bandasTop <- LLS.topBandas numero
+            putStrLn (show bandasTop)
+          Nothing -> do
+            putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
+            main
       "29" -> do --Top Musicas
-        print ("###")
+        putStrLn("Informe a quantidade de musicas que devem aparecer no TOP:")
+        quantidade <- getLine
+        let quantidadeInt = readMaybe quantidade :: Maybe Int
+        case quantidadeInt of
+          Just numero -> do
+            musicasTop <- LLS.topMusicas numero
+            putStrLn (show musicasTop)
+          Nothing -> do
+            putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
+            main
       
 
 apresentacaoInicial:: IO()
@@ -68,8 +101,8 @@ menuInicial = do
   putStrLn("0 - Sair")
   putStrLn("----------\n\n")
   entrada <- getLine
-  let entradaConvertida = readMaybe entrada :: Maybe Int
-  case entradaConvertida of
+  let entradaInt = readMaybe entrada :: Maybe Int
+  case entradaInt of
     Just numero -> do
       case numero of
         1 -> do
@@ -165,3 +198,34 @@ menuFiltrarBandas = do
     Nothing -> do
       putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
       menuFiltrarBandas
+
+menuFiltrarMusicas:: IO ()
+menuFiltrarMusicas = do
+  putStrLn("-----Filtrar Musicas-----")
+  putStrLn("1 - Por ritmo")
+  putStrLn("2 - Por instrumento")
+  putStrLn("3 - Por trecho")
+  entrada <- getLine
+  let entradaInt = readMaybe entrada :: Maybe Int
+  case entradaInt of
+    Just numero -> do
+      case numero of
+        1 -> do
+          putStrLn("Indique o ritmo a ser filtrado:")
+          ritmo <-getLine
+          resultado <- LLS.filtrarMusicasPorRitmo ritmo
+          putStrLn (show resultado)
+        2 -> do
+          putStrLn("Indique o instrumento a ser filtrado:")
+          instrumento <-getLine
+          resultado <- LLS.filtrarMusicasPorInstrumento instrumento
+          putStrLn (show resultado)
+        3 -> do
+          putStrLn("Indique o trecho a ser filtrado:")
+          trecho <-getLine
+          resultado <- LLS.filtrarMusicasPorTrecho trecho
+          putStrLn (show resultado)
+
+    Nothing -> do
+      putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
+      menuFiltrarMusicas
