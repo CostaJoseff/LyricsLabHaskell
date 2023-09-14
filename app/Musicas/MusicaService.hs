@@ -3,19 +3,20 @@ module Musicas.MusicaService where
 import Musicas.MusicaRep as MRep
 import Objetos.Musica
 import Data.Time.Calendar
+import Data.List (isInfixOf, isPrefixOf)
 
 {-Função Pública-}
 setMusica:: Musica -> IO()
 setMusica musica = do
-  maybeArtistas <- MRep.get
-  case maybeArtistas of
-    Just artistasLista -> MRep.set (artista:artistasLista)
+  maybeMusicas <- MRep.get
+  case maybeMusicas of
+    Just musicaLista -> MRep.set (musica:musicaLista)
     Nothing -> return ()
 
 {-Função Pública-}
 getMusicas :: IO [Musica]
 getMusicas = do
-  maybeMusicas <- getMusica
+  maybeMusicas <- MRep.get
   case maybeMusicas of
     Just musicasLista -> return musicasLista
     Nothing -> return []
@@ -26,7 +27,7 @@ getMusicaPorID idAlvo = do
   musicas <- getMusicas
   case findMusicaByID idAlvo musicas of
     Just musicaEncontrada -> return musicaEncontrada
-    Nothing -> return (Musica "NULL" [] [] "NULL" (fromGregorian 0 0 0) "NULL" "NULL" 0)
+    Nothing -> return (Musica "NULL" [] [] "NULL" "NULL" "NULL" "NULL" 0)
 
 findMusicaByID :: String -> [Musica] -> Maybe Musica
 findMusicaByID _ [] = Nothing  -- Se a lista estiver vazia, retornar Nothing
@@ -36,17 +37,6 @@ findMusicaByID idAlvo (musica:resto)
 
 
 
-{-Função Pública-}
-filtrarMusicasPorBanda :: String -> IO [Musica]
-filtrarMusicasPorBanda nomeBanda = do
-  musicas <- getMusicas
-  return (filterByBanda nomeBanda musicas [])
-
-filterByBanda :: String -> [Musica] -> [Musica] -> [Musica]
-filterByBanda _ [] result = result
-filterByBanda nomeBanda (musica:musicasRestantes) result
-  | nomeBanda == nomeBanda (nomeBanda musica) = filterByBanda nomeBanda musicasRestantes (musica:result)
-  | otherwise = filterByBanda nomeBanda musicasRestantes result
 
 {-Função Pública-}
 filtrarMusicasPorParticipante :: String -> IO [Musica]
@@ -71,14 +61,7 @@ filterByRitmo _ [] result = result
 filterByRitmo nomeRitmo (musica:musicasRestantes) result
   | nomeRitmo == ritmo musica = filterByRitmo nomeRitmo musicasRestantes (musica:result)
   | otherwise = filterByRitmo nomeRitmo musicasRestantes result
-
-{-Função Pública-}
-filtrarMusicasPorAno :: Integer -> [Musica] -> [Musica]
-filtrarMusicasPorAno ano musicas =
-  filter (\musica -> extractYear (lancamento musica) == ano) musicas
-  where
-    extractYear :: Day -> Integer
-    extractYear day = toInteger $ (\(y, _, _) -> y) (toGregorian day)
+  
 
 
 {-Função Pública-}
