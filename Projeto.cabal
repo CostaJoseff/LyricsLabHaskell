@@ -47,8 +47,11 @@ executable Projeto-exe
       Bandas.BandaRepository
       Bandas.BandaService
       LyricsLibService
+      Musicas.MusicaRep
+      Musicas.MusicaService
       Objetos.Artista
       Objetos.Banda
+      Objetos.Musica
       Paths_Projeto
   hs-source-dirs:
       app
