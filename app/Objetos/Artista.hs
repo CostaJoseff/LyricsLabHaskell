@@ -25,7 +25,7 @@ module Objetos.Artista where
 
 
   bandasAnterioresToString:: [String] -> String -> String
-  bandasAnterioresToString [] resultado = "-- Nenhuma banda Anterior"
+  bandasAnterioresToString [] resultado = "-- Nenhuma banda Anterior\n"
   bandasAnterioresToString (banda:resto) resultado
     | null resto = resultado ++ "- " ++ banda ++ "\n"
     | otherwise = bandasAnterioresToString resto (resultado ++ "-- " ++ banda ++ "\n")

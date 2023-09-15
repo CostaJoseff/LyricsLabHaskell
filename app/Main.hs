@@ -29,7 +29,8 @@ fluxoPrincipal = do
   limparTerminal
   resultado <- menuInicial
   if resultado == "0" then do
-    print ("Até mais!")
+    print ("Ate mais!")
+    threadDelay (2 * 1000000)
     limparTerminal
   else do
     case resultado of
@@ -99,10 +100,11 @@ menuInicial = do
         0 -> return ("0")
         _ -> do
           putStrLn("\n\nOpcao invalida!\n\n")
+          threadDelay (2 * 1000000)
           menuInicial
     Nothing -> do
       putStrLn("\n\nOpcao invalida!\n\n")
-
+      threadDelay (2 * 1000000)
       menuInicial
 
 menuCadastros:: String -> IO (String)
@@ -128,9 +130,11 @@ menuCadastros num1 = do
         5 -> return (num1++"5")
         _ -> do
           putStrLn("\n\nOpcao invalida!\n\n")
+          threadDelay (2 * 1000000)
           menuCadastros num1
     Nothing -> do
       putStrLn("\n\nOpcao invalida!\n\n")
+      threadDelay (2 * 1000000)
       menuCadastros num1
 
 menuBuscas:: String -> IO (String)
@@ -165,10 +169,12 @@ menuBuscas num1 = do
         9 -> return (num1++"9")
         _ -> do
           putStrLn("\n\nOpcao invalida!\n\n")
+          threadDelay (2 * 1000000)
           menuBuscas num1
 
     Nothing -> do
       putStrLn("\n\nOpcao invalida!\n\n")
+      threadDelay (2 * 1000000)
       menuBuscas num1
 
 
@@ -181,7 +187,17 @@ menuBuscarArtista = do
   putStrLn("Informe o nome do artista:")
   nome <- getLine
   resultado <- LLS.buscarArtistaPorNome nome
-  putStrLn (show resultado)
+  limparTerminal
+  listarArtistas resultado
+  putStrLn("Enter para continuar.")
+  getLine
+  return ()
+
+listarArtistas:: [String] -> IO ()
+listarArtistas [] = return ()
+listarArtistas (artista:resto) = do
+  putStrLn (artista)
+  listarArtistas resto
 
 menuBuscarBanda:: IO ()
 menuBuscarBanda = do
@@ -209,12 +225,14 @@ menuTopArtistas = do
     Just numero -> do
       if numero <= 0 then do
         putStrLn("\n\nOpcao invalida!\n\n")
+        threadDelay (2 * 1000000)
         menuTopArtistas
       else do
         artistasTop <- LLS.topArtistas numero
         putStrLn (show artistasTop)
     Nothing -> do
       putStrLn("\n\nOpcao invalida!\n\n")
+      threadDelay (2 * 1000000)
       menuTopArtistas
 
 menuTopBandas:: IO ()
@@ -227,12 +245,14 @@ menuTopBandas = do
     Just numero -> do
       if numero <= 0 then do
         putStrLn("\n\nOpcao invalida!\n\n")
+        threadDelay (2 * 1000000)
         menuTopMusicas
       else do
         bandasTop <- LLS.topBandas numero
         putStrLn (show bandasTop)
     Nothing -> do
       putStrLn("\n\nOpcao invalida!\n\n")
+      threadDelay (2 * 1000000)
       menuTopBandas
 
 menuTopMusicas:: IO ()
@@ -245,12 +265,14 @@ menuTopMusicas = do
     Just numero -> do
       if numero <= 0 then do
         putStrLn("\n\nOpcao invalida!\n\n")
+        threadDelay (2 * 1000000)
         menuTopMusicas
       else do
         musicasTop <- LLS.topMusicas numero
         putStrLn (show musicasTop)
     Nothing -> do
       putStrLn("\n\nOpcao invalida!\n\n")
+      threadDelay (2 * 1000000)
       menuTopMusicas
 
 menuFiltrarArtistas:: IO()
@@ -261,7 +283,10 @@ menuFiltrarArtistas = do
   putStrLn("\nIndique a funcao a ser filtrada:")
   funcao <- getLine
   resultado <- LLS.filtrarArtistasPorFuncao funcao
-  putStrLn (show resultado)
+  listarArtistas resultado
+  putStrLn("Enter para continuar.")
+  getLine
+  return ()
 
 menuFiltrarBandas:: IO()
 menuFiltrarBandas = do
@@ -288,9 +313,11 @@ menuFiltrarBandas = do
           putStrLn (show resultado)
         _ -> do
           putStrLn("\n\nOpcao invalida!\n\n")
+          threadDelay (2 * 1000000)
           menuFiltrarBandas
     Nothing -> do
       putStrLn("\n\nOpcao invalida!\n\n")
+      threadDelay (2 * 1000000)
       menuFiltrarBandas
 
 menuFiltrarMusicas:: IO ()
@@ -325,10 +352,12 @@ menuFiltrarMusicas = do
           putStrLn (show resultado)
         _ -> do
           putStrLn("\n\nOpcao invalida!\n\n")
+          threadDelay (2 * 1000000)
           menuFiltrarMusicas
 
     Nothing -> do
       putStrLn("\n\nOpcao invalida!\n\n")
+      threadDelay (2 * 1000000)
       menuFiltrarMusicas
 
 menuCadastrarArtista:: IO ()
@@ -360,6 +389,7 @@ obterListaDeBandas = do
       return []
     _ -> do
       putStrLn("\n\nOpcao invalida!\n\n")
+      threadDelay (2 * 1000000)
       obterListaDeBandas
 
 menuCadastrarBanda:: IO ()
