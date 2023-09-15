@@ -7,17 +7,30 @@ import Control.Exception
 import Text.Read (readMaybe)
 import Control.Concurrent (threadDelay)
 import Data.Char
-import Data.List.Split
+import System.Process (system)
+
+limparTerminal:: IO ()
+limparTerminal = do
+  system "clear"
+  return ()
 
 main::IO()
 main = do
+  limparTerminal
   apresentacaoInicial
   fluxoPrincipal
 
+apresentacaoInicial:: IO()
+apresentacaoInicial = do
+  print("Bem vindo ao Lyrics-LIB")
+
 fluxoPrincipal:: IO()
 fluxoPrincipal = do
+  limparTerminal
   resultado <- menuInicial
-  if resultado == "0" then print ("Até mais!")
+  if resultado == "0" then do
+    print ("Até mais!")
+    limparTerminal
   else do
     case resultado of
       "11" -> do --Cadastrar Artista
@@ -28,27 +41,21 @@ fluxoPrincipal = do
         fluxoPrincipal
       "13" -> do --Cadastrar Musica
         print ("###")
+        fluxoPrincipal
       "14" -> do --Adicionar Integrantes na Banda
         print ("###")
+        fluxoPrincipal
       "15" -> do --Remover Integrantes na Banda
         print ("###")
+        fluxoPrincipal
       "21" -> do --Buscar Artista
-        putStrLn("Informe o nome do artista:")
-        nome <- getLine
-        resultado <- LLS.buscarArtistaPorNome nome
-        putStrLn (show resultado)
+        menuBuscarArtista
         fluxoPrincipal
       "22" -> do --Buscar Banda
-        putStrLn("Informe o nome da banda:")
-        nome <- getLine
-        resultado <- LLS.buscarBanda nome
-        putStrLn (resultado)
+        menuBuscarBanda
         fluxoPrincipal
       "23" -> do --Buscar Musica
-        putStrLn("Informe o nome da musica:")
-        nome <- getLine
-        resultado <- LLS.buscarMusica nome
-        putStrLn (resultado)
+        menuBuscarMusica
         fluxoPrincipal
       "24" -> do --Filtrar Artistas
         menuFiltrarArtistas
@@ -60,47 +67,18 @@ fluxoPrincipal = do
         menuFiltrarMusicas
         fluxoPrincipal
       "27" -> do --Top Artistas
-        putStrLn("Informe a quantidade de artistas que devem aparecer no TOP:")
-        quantidade <- getLine
-        let quantidadeInt = readMaybe quantidade :: Maybe Int
-        case quantidadeInt of
-          Just numero -> do
-            artistasTop <- LLS.topArtistas numero
-            putStrLn (show artistasTop)
-          Nothing -> do
-            putStrLn("\n\nOpcao invalida!\n\n")
-            fluxoPrincipal
+        menuTopArtistas
+        fluxoPrincipal
       "28" -> do --Top Bandas
-        putStrLn("Informe a quantidade de bandas que devem aparecer no TOP:")
-        quantidade <- getLine
-        let quantidadeInt = readMaybe quantidade :: Maybe Int
-        case quantidadeInt of
-          Just numero -> do
-            bandasTop <- LLS.topBandas numero
-            putStrLn (show bandasTop)
-          Nothing -> do
-            putStrLn("\n\nOpcao invalida!\n\n")
-            fluxoPrincipal
+        menuTopBandas
+        fluxoPrincipal
       "29" -> do --Top Musicas
-        putStrLn("Informe a quantidade de musicas que devem aparecer no TOP:")
-        quantidade <- getLine
-        let quantidadeInt = readMaybe quantidade :: Maybe Int
-        case quantidadeInt of
-          Just numero -> do
-            musicasTop <- LLS.topMusicas numero
-            putStrLn (show musicasTop)
-          Nothing -> do
-            putStrLn("\n\nOpcao invalida!\n\n")
-            fluxoPrincipal
-
-apresentacaoInicial:: IO()
-apresentacaoInicial = do
-  print("Bem vindo ao Lyrics-LIB")
-  threadDelay (2 * 1000000)
-  putStrLn $ replicate 50 '\n'
+        menuTopMusicas
+        fluxoPrincipal
 
 menuInicial:: IO (String)
 menuInicial = do
+  limparTerminal
   putStrLn("----------")
   putStrLn("1 - Cadastros")
   putStrLn("2 - Buscas")
@@ -124,10 +102,12 @@ menuInicial = do
           menuInicial
     Nothing -> do
       putStrLn("\n\nOpcao invalida!\n\n")
+
       menuInicial
 
 menuCadastros:: String -> IO (String)
 menuCadastros num1 = do
+  limparTerminal
   putStrLn("----------")
   putStrLn("1 - Cadastrar Artista")
   putStrLn("2 - Cadastrar Banda")
@@ -155,6 +135,7 @@ menuCadastros num1 = do
 
 menuBuscas:: String -> IO (String)
 menuBuscas num1 = do
+  limparTerminal
   putStrLn("----------")
   putStrLn("1 - Buscar Artista")
   putStrLn("2 - Buscar Banda")
@@ -194,8 +175,87 @@ menuBuscas num1 = do
 menuDashBoard:: IO (String)
 menuDashBoard = return ("Em Breve!")
 
+menuBuscarArtista:: IO ()
+menuBuscarArtista = do
+  limparTerminal
+  putStrLn("Informe o nome do artista:")
+  nome <- getLine
+  resultado <- LLS.buscarArtistaPorNome nome
+  putStrLn (show resultado)
+
+menuBuscarBanda:: IO ()
+menuBuscarBanda = do
+  limparTerminal
+  putStrLn("Informe o nome da banda:")
+  nome <- getLine
+  resultado <- LLS.buscarBanda nome
+  putStrLn (resultado)
+
+menuBuscarMusica:: IO ()
+menuBuscarMusica = do
+  limparTerminal
+  putStrLn("Informe o nome da musica:")
+  nome <- getLine
+  resultado <- LLS.buscarMusica nome
+  putStrLn (resultado)
+
+menuTopArtistas:: IO ()
+menuTopArtistas = do
+  limparTerminal
+  putStrLn("Informe a quantidade de artistas que devem aparecer no TOP:")
+  quantidade <- getLine
+  let quantidadeInt = readMaybe quantidade :: Maybe Int
+  case quantidadeInt of
+    Just numero -> do
+      if numero <= 0 then do
+        putStrLn("\n\nOpcao invalida!\n\n")
+        menuTopArtistas
+      else do
+        artistasTop <- LLS.topArtistas numero
+        putStrLn (show artistasTop)
+    Nothing -> do
+      putStrLn("\n\nOpcao invalida!\n\n")
+      menuTopArtistas
+
+menuTopBandas:: IO ()
+menuTopBandas = do
+  limparTerminal
+  putStrLn("Informe a quantidade de bandas que devem aparecer no TOP:")
+  quantidade <- getLine
+  let quantidadeInt = readMaybe quantidade :: Maybe Int
+  case quantidadeInt of
+    Just numero -> do
+      if numero <= 0 then do
+        putStrLn("\n\nOpcao invalida!\n\n")
+        menuTopMusicas
+      else do
+        bandasTop <- LLS.topBandas numero
+        putStrLn (show bandasTop)
+    Nothing -> do
+      putStrLn("\n\nOpcao invalida!\n\n")
+      menuTopBandas
+
+menuTopMusicas:: IO ()
+menuTopMusicas = do
+  limparTerminal
+  putStrLn("Informe a quantidade de musicas que devem aparecer no TOP:")
+  quantidade <- getLine
+  let quantidadeInt = readMaybe quantidade :: Maybe Int
+  case quantidadeInt of
+    Just numero -> do
+      if numero <= 0 then do
+        putStrLn("\n\nOpcao invalida!\n\n")
+        menuTopMusicas
+      else do
+        musicasTop <- LLS.topMusicas numero
+        putStrLn (show musicasTop)
+    Nothing -> do
+      putStrLn("\n\nOpcao invalida!\n\n")
+      menuTopMusicas
+
 menuFiltrarArtistas:: IO()
 menuFiltrarArtistas = do
+  limparTerminal
   putStrLn("-----Filtrar Artistas-----")
   putStrLn("Opcao unica - filtrar artista por funcao")
   putStrLn("\nIndique a funcao a ser filtrada:")
@@ -205,6 +265,7 @@ menuFiltrarArtistas = do
 
 menuFiltrarBandas:: IO()
 menuFiltrarBandas = do
+  limparTerminal
   putStrLn("-----Filtrar Bandas-----")
   putStrLn("1 - Por genero")
   putStrLn("2 - Por instrumento")
@@ -214,11 +275,13 @@ menuFiltrarBandas = do
     Just numero -> do
       case numero of
         1 -> do
+          limparTerminal
           putStrLn("Indique o genero a ser filtrado:")
           genero <- getLine
           resultado <- LLS.filtrarBandasPorGenero genero
           putStrLn (show resultado)
         2 -> do
+          limparTerminal
           putStrLn("Indique o instrumento a ser filtrado:")
           genero <- getLine
           resultado <- LLS.filtrarBandasPorInstrumento genero
@@ -232,6 +295,7 @@ menuFiltrarBandas = do
 
 menuFiltrarMusicas:: IO ()
 menuFiltrarMusicas = do
+  limparTerminal
   putStrLn("-----Filtrar Musicas-----")
   putStrLn("1 - Por ritmo")
   putStrLn("2 - Por instrumento")
@@ -242,16 +306,19 @@ menuFiltrarMusicas = do
     Just numero -> do
       case numero of
         1 -> do
+          limparTerminal
           putStrLn("Indique o ritmo a ser filtrado:")
           ritmo <-getLine
           resultado <- LLS.filtrarMusicasPorRitmo ritmo
           putStrLn (show resultado)
         2 -> do
+          limparTerminal
           putStrLn("Indique o instrumento a ser filtrado:")
           instrumento <-getLine
           resultado <- LLS.filtrarMusicasPorInstrumento instrumento
           putStrLn (show resultado)
         3 -> do
+          limparTerminal
           putStrLn("Indique o trecho a ser filtrado:")
           trecho <-getLine
           resultado <- LLS.filtrarMusicasPorTrecho trecho
@@ -266,69 +333,78 @@ menuFiltrarMusicas = do
 
 menuCadastrarArtista:: IO ()
 menuCadastrarArtista = do
+  limparTerminal
   putStrLn("Nome do artista")
   nome <- getLine
+  limparTerminal
   putStrLn("Nome da Banda Atual")
   nomeBanda <- getLine
+  bandasAnteriores <- obterListaDeBandas
+  limparTerminal
+  putStrLn("Informe a funcao do artista:")
+  funcao <- getLine
+  LLS.cadastrarArtista [nome, nomeBanda, funcao] bandasAnteriores
+
+obterListaDeBandas:: IO [String]
+obterListaDeBandas = do
+  limparTerminal
   putStrLn("Participou de outras Bandas? (s/n)")
   resposta <- getLine
   case (map toUpper resposta) of
     "S" -> do
-      putStrLn("Digite o nome das bandas e ao acabar digite ~~fim (com ~~):")
-      bandasAnteriores <- obterListaDeBandas [] 1
-      putStrLn("Informe a funcao do artista:")
-      funcao <- getLine
-      LLS.cadastrarArtista [nome, nomeBanda, funcao] bandasAnteriores
+      limparTerminal
+      putStrLn("Insira os nomes das bandas separados por espaco")
+      bandas <- getLine
+      return (words bandas)
     "N" -> do
-      putStrLn("Informe a funcao do artista:")
-      funcao <- getLine
-      LLS.cadastrarArtista [nome, nomeBanda, funcao] []
+      return []
     _ -> do
-      putStrLn("Opcao invalida, abortando cadastro!")
-
-obterListaDeBandas:: [String] -> Int -> IO [String]
-obterListaDeBandas resultado indice = do
-  putStrLn("Banda " ++ (show indice) ++ ":")
-  banda <- getLine
-  if banda == "~~fim" then return (resultado)
-  else obterListaDeBandas (banda:resultado) (indice+1)
+      putStrLn("\n\nOpcao invalida!\n\n")
+      obterListaDeBandas
 
 menuCadastrarBanda:: IO ()
 menuCadastrarBanda = do
+  limparTerminal
   putStrLn("Nome da banda:")
   nome <- getLine
   artistasAtuais <- obterComposicaoAtual
   artistasAnteriores <- menuArtistasAnteriores
   musicas <- menuMusicas
   instrumentos <- obterInstrumentos
+  limparTerminal
   putStrLn("Data da fundacao da banda:")
   dataFund <- getLine
+  limparTerminal
   putStrLn("Genero geral da banda:")
   genero <- getLine
-  LSS.cadastrarBanda [nome, dataFund, genero] artistasAtuais artistasAnteriores musicas instrumentos
+  LLS.cadastrarBanda [nome, dataFund, genero] artistasAtuais artistasAnteriores musicas instrumentos
 
 
-obterComposicaoAtual::[String]
+obterComposicaoAtual:: IO [String]
 obterComposicaoAtual = do
+  limparTerminal
   putStrLn("Insira os ID's dos artistas separados por espaco")
   idsArtistas <- getLine
-  return (splitOn " " idsArtistas)
+  return (words idsArtistas)
 
 obterInstrumentos:: IO [String]
 obterInstrumentos = do
+  limparTerminal
   putStrLn("Insira os instrumentos utilizados pela banda separados por espaco")
   instrumentos <- getLine
-  return (splitOn " " instrumentos)
+  return (words instrumentos)
 
 menuArtistasAnteriores:: IO [String]
 menuArtistasAnteriores = do
+  limparTerminal
   putStrLn("A banda ja possuiu outros artistas alem dos atuais? (s/n)")
   resposta <- getLine
   case (map toUpper resposta) of
     "S" -> do
+      limparTerminal
       putStrLn("Insira os ID's dos artistas separados por espaco")
       idsArtistas <- getLine
-      return (splitOn " " idsArtistas)
+      return (words idsArtistas)
     "N" -> do
       return []
     _ -> do
@@ -337,13 +413,15 @@ menuArtistasAnteriores = do
 
 menuMusicas:: IO [String]
 menuMusicas = do
+  limparTerminal
   putStrLn("A banda possui musicas? (s/n)")
   resposta <- getLine
   case (map toUpper resposta) of
     "S" -> do
+      limparTerminal
       putStrLn("Insira os ID's das musicas separadas por espaco")
       idsMusicas <- getLine
-      return (splitOn " " idsMusicas)
+      return (words idsMusicas)
     "N" -> do
       return []
     _ -> do

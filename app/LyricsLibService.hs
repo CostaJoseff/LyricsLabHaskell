@@ -52,7 +52,7 @@ filtrarBandasPorGenero:: String -> IO [String]
 filtrarBandasPorGenero genero = return [("")]
 
 cadastrarBanda:: [String] -> [String] -> [String] -> [String] -> [String] -> IO ()
-cadastrarBanda dados artistasAtuais artistasAnteriores musicas instrumentos
+cadastrarBanda dados artistasAtuais artistasAnteriores musicas instrumentos = return ()
 
 --Funcoes Musica
 
