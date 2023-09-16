@@ -4,6 +4,12 @@ import Artistas.ArtistaRep as ARep
 import Objetos.Artista
 
 {-Função Pública-}
+len:: IO Int
+len = do
+  artistas <- getArtistas
+  return (length artistas)
+
+{-Função Pública-}
 setArtista:: Artista -> IO()
 setArtista artista = do
   maybeArtistas <- ARep.get
