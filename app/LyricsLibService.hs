@@ -76,6 +76,20 @@ removeIntegranteDeBanda nomeIntegrante nomeBanda = do
 
 --Funcoes Musica
 
+topBandas:: Int -> IO [String]
+topBandas xMelhores = return [("")]
+
+filtrarBandasPorInstrumento:: String -> IO [String]
+filtrarBandasPorInstrumento instrumento = return [("")]
+
+filtrarBandasPorGenero:: String -> IO [String]
+filtrarBandasPorGenero genero = return [("")]
+
+cadastrarBanda:: [String] -> [String] -> [String] -> [String] -> [String] -> IO ()
+cadastrarBanda dados artistasAtuais artistasAnteriores musicas instrumentos = return ()
+
+--Funcoes Musica
+
 buscarMusica:: String -> IO String
 buscarMusica nomeMusica = return ("")
 

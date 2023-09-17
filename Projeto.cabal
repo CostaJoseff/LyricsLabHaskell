@@ -36,6 +36,7 @@ library
     , base >=4.7 && <5
     , bytestring
     , directory
+    , process
     , time
   default-language: Haskell2010
 
@@ -44,10 +45,13 @@ executable Projeto-exe
   other-modules:
       Artistas.ArtistaRep
       Artistas.ArtistaService
+      Bandas.BandaRepository
+      Bandas.BandaService
       LyricsLibService
       Musicas.MusicaRep
       Musicas.MusicaService
       Objetos.Artista
+      Objetos.Banda
       Objetos.Musica
       Paths_Projeto
   hs-source-dirs:
@@ -59,6 +63,7 @@ executable Projeto-exe
     , base >=4.7 && <5
     , bytestring
     , directory
+    , process
     , time
   default-language: Haskell2010
 
@@ -76,5 +81,6 @@ test-suite Projeto-test
     , base >=4.7 && <5
     , bytestring
     , directory
+    , process
     , time
   default-language: Haskell2010
