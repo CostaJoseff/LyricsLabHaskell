@@ -58,8 +58,8 @@ temEsseInstrumento instrumento (h : t) = if  instrumento == h
     else temEsseInstrumento instrumento t
 
 {-Função Pública-}
-filtrarBandasPorGenero :: String -> IO [Banda]
-filtrarBandasPorGenero genero = do
+filtrarBandasGenero :: String -> IO [Banda]
+filtrarBandasGenero genero = do
     bandas <- todasAsBandas
     (bandasPorGenero genero bandas []) >>= return
 
@@ -72,8 +72,8 @@ bandasPorGenero generoFornecido (h : t) resultado
     |otherwise = bandasPorGenero generoFornecido t resultado
 
 {-Função Pública-}
-filtrarBandaPorArtista :: String -> IO [Banda]
-filtrarBandaPorArtista artista = do
+filtrarBandaArtista :: String -> IO [Banda]
+filtrarBandaArtista artista = do
     bandas <- todasAsBandas
     (bandasPorArtista artista bandas [])
 
@@ -181,3 +181,17 @@ removeStringLista nome [] = []
 removeStringLista nome (h : t)
     |nome == h  = removeStringLista nome t
     |otherwise = h : removeStringLista nome t
+
+retornaNomeString :: IO Banda -> IO String
+retornaNomeString banda = do
+    extraida <- banda
+    return (nome extraida)
+
+retornaNomesString :: IO [Banda] -> IO [String]
+retornaNomesString bandas = do
+    bandasExtraidas <- bandas
+    converteEmString bandasExtraidas []
+
+converteEmString :: [Banda] -> [String]-> IO [String]
+converteEmString [] resultado = return resultado
+converteEmString (h1 : t1) resultado = converteEmString t1 (resultado ++ [nome h1]) 

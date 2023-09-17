@@ -40,7 +40,41 @@ cadastrarArtista dados bandas = do
 -- Funcoes Banda
 
 buscarBanda:: String -> IO String
-buscarBanda nomeBanda = return ("")
+buscarBanda nomeBanda = (retornaNomeString (recuperarPorNome nomeBanda)) >>= return
+
+
+topBandas:: Int -> IO [String] -- Precisa das funcoes de musica
+topBandas xMelhores = return [("")]
+
+filtrarBandasPorInstrumento:: String -> IO [String]
+filtrarBandasPorInstrumento instrumento = retornaNomesString (filtrarBandaInstrumento instrumento)
+
+filtrarBandasPorGenero:: String -> IO [String]
+filtrarBandasPorGenero genero = retornaNomesString (filtrarBandasGenero genero)
+
+filtrarBandaPorArtista :: String -> IO [String]
+filtrarBandaPorArtista artista = retornaNomesString (filtrarBandaArtista artista)
+
+adicionarInstrumentoEmBanda :: String -> String -> IO String
+adicionarInstrumentoEmBanda instrumento nomeBanda = do
+    nomeBanda <- retornaNomeString (adicionarInstrumento instrumento nomeBanda)
+    if nomeBanda == "null" then do return "Nao foi possivel candastrar"
+    else return "Cadastrado"
+    
+
+adicionarIntegrandeEmBanda :: String -> String -> IO String
+adicionarIntegrandeEmBanda nomeIntegrante nomeBanda = do
+    nomeBanda <- retornaNomeString(adicionaNovoIntegrante nomeIntegrante nomeBanda)
+    if nomeBanda == "null" then do return "Nao foi possivel candastrar"
+    else return "Cadastrado"
+
+removeIntegranteDeBanda :: String -> String -> IO String
+removeIntegranteDeBanda nomeIntegrante nomeBanda = do
+    nomeBanda <- retornaNomeString (removeIntegrante nomeIntegrante nomeBanda)
+    if nomeBanda == "null" then do return "Nao foi possivel candastrar"
+    else return "Cadastrado"
+
+--Funcoes Musica
 
 topBandas:: Int -> IO [String]
 topBandas xMelhores = return [("")]

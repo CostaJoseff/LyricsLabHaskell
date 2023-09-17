@@ -17,7 +17,17 @@ data Banda = Banda {
     genero :: String
 
 
-}deriving (Generic, Show)
+}deriving (Generic)
 
 instance FromJSON Banda
 instance ToJSON Banda
+instance Show Banda where
+    show (Banda nome composicaoAtual artistasAnteriores musicas instrumentos dataFundacao genero) = 
+        "___________________________________\n" ++
+        "Nome: " ++ nome ++ "\n" ++
+        "Composicao Atual: " ++ show composicaoAtual ++ "\n" ++
+        "Artistas Anteriores: " ++ show artistasAnteriores ++ "\n" ++ 
+        "Musicas: " ++ show musicas ++ "\n" ++
+        "Instrumentos: " ++ show instrumentos ++ "\n" ++
+        "dataFundacao: " ++ dataFundacao ++ "\n" ++
+        "Genero: " ++ genero ++ "\n" 
