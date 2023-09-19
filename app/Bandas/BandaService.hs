@@ -5,6 +5,20 @@ import Control.Exception
 
 import Bandas.BandaRepository
 import Objetos.Banda
+
+index :: Int -> [String] -> String
+index i [] = "Nao foi encontrado"
+index 0 (h : t) = h
+index i (h : t) = index (i - 1) t 
+
+
+preCadBanda :: [String] -> [String] -> [String] -> [String] -> [String] -> IO()
+preCadBanda valores artistasAtuaisBanda artistasAnterioresBanda musicasBanda instrumentosBanda = do
+    
+    let banda = (Banda (index 0 valores) artistasAtuaisBanda artistasAnterioresBanda musicasBanda instrumentosBanda (index 1 valores) (index 2 valores))
+    salvaBanda banda
+
+
 {-Função Pública-}
 salvaBanda :: Banda -> IO()
 salvaBanda banda = do

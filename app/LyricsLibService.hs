@@ -74,19 +74,9 @@ removeIntegranteDeBanda nomeIntegrante nomeBanda = do
     if nomeBanda == "null" then do return "Nao foi possivel candastrar"
     else return "Cadastrado"
 
---Funcoes Musica
-
-topBandas:: Int -> IO [String]
-topBandas xMelhores = return [("")]
-
-filtrarBandasPorInstrumento:: String -> IO [String]
-filtrarBandasPorInstrumento instrumento = return [("")]
-
-filtrarBandasPorGenero:: String -> IO [String]
-filtrarBandasPorGenero genero = return [("")]
 
 cadastrarBanda:: [String] -> [String] -> [String] -> [String] -> [String] -> IO ()
-cadastrarBanda dados artistasAtuais artistasAnteriores musicas instrumentos = return ()
+cadastrarBanda dados artistasAtuaisBanda artistasAnterioresBanda musicasBanda instrumentosBanda = preCadBanda dados artistasAtuaisBanda artistasAnterioresBanda musicasBanda instrumentosBanda
 
 --Funcoes Musica
 
