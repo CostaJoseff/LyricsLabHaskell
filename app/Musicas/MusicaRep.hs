@@ -3,15 +3,25 @@ module Musicas.MusicaRep where
 import qualified Data.ByteString.Lazy as BS
 import Objetos.Musica
 import Data.Aeson
+import System.Directory
+import Data.Maybe (mapMaybe)
 
 set :: [Musica] -> IO ()
 set musicas = do
-  codificarArquivoMusica musicas
+  codificarArquivo musicas
 
-codificarArquivoMusica :: [Musica] -> IO ()
-codificarArquivoMusica musicas = BS.writeFile "../musica.json" (encode musicas)
+codificarArquivo:: [Musica] -> IO()
+codificarArquivo musica = do
+  dirAtual <- getCurrentDirectory
+  BS.writeFile (dirAtual++"\\app\\musica.json") (encode musica)
 
-get :: IO (Maybe [Musica])
+get:: IO (Maybe [Musica])
 get = do
-  json <- BS.readFile "../musica.json"
+  dirAtual <- getCurrentDirectory
+  json <- BS.readFile (dirAtual++"\\app\\musica.json")
   return (decode json)
+
+
+      
+      
+

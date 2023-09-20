@@ -37,14 +37,14 @@ main = do
       "23" -> do --Buscar Musica
         putStrLn("Informe o nome da musica:")
         nome <- getLine
-        resultado <- LLS.buscarMusica nome
+        resultado <- LLS.getMusicaPorNome nome
         putStrLn (resultado)
       "24" -> do --Filtrar Artistas
         menuFiltrarArtistas
       "25" -> do --Filtrar Bandas
         menuFiltrarBandas
       "26" -> do --Filtrar Musicas
-        print ("###")
+        menuFiltrarMusicas
       "27" -> do --Top Artistas
         print ("###")
       "28" -> do --Top Bandas
@@ -165,3 +165,51 @@ menuFiltrarBandas = do
     Nothing -> do
       putStrLn("\n\nOpção invalida, por favor digite uma opcao valida.\n\n")
       menuFiltrarBandas
+
+
+menuFiltrarMusicas :: IO ()
+menuFiltrarMusicas = do
+  putStrLn "-----Filtrar Músicas-----"
+  putStrLn "1 - Por participante"
+  putStrLn "2 - Por ritmo"
+  putStrLn "3 - Por trecho "
+  putStrLn "4 - Por instrumento"
+  putStrLn "5 - Sair"
+  entrada <- getLine
+  let entradaInt = readMaybe entrada :: Maybe Int
+  case entradaInt of
+    Just opcao ->
+      case opcao of
+        1 -> do
+          putStrLn "Digite o nome do participante:"
+          nomeParticipante <- getLine
+          resultado <- LLS.filtrarMusicasPorParticipante nomeParticipante
+          putStrLn (show resultado)
+        2 -> do
+          putStrLn "Digite o nome do ritmo:"
+          nomeRitmo <- getLine
+          resultado <- LLS.filtrarMusicasPorRitmo nomeRitmo
+          putStrLn (show resultado)
+          
+        3 -> do
+          putStrLn "Digite o trecho:"
+          trechoLetra <- getLine
+          resultado <- LLS.filtrarMusicasPorTrechoLetra trechoLetra
+          putStrLn (show resultado)
+        4 -> do
+          putStrLn "Digite o nome do instrumento:"
+          nomeInstrumento <- getLine
+          resultado <- LLS.filtrarMusicasPorInstrumento nomeInstrumento
+          putStrLn (show resultado)
+        5 -> putStrLn "Saindo do menu de filtragem."
+        _ -> do
+          putStrLn "Opção inválida, por favor digite uma opção válida."
+          menuFiltrarMusicas
+    Nothing -> do
+      putStrLn "Opção inválida, por favor digite uma opção válida."
+      menuFiltrarMusicas
+
+--imprimirMusicasFiltradas :: [Musica] -> IO ()
+--imprimirMusicasFiltradas [] = putStrLn "Nenhuma música encontrada."
+--imprimirMusicasFiltradas musicas = mapM_ print musicas
+

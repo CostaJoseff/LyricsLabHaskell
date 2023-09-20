@@ -27,7 +27,15 @@ getMusicaPorID idAlvo = do
   musicas <- getMusicas
   case findMusicaByID idAlvo musicas of
     Just musicaEncontrada -> return musicaEncontrada
-    Nothing -> return (Musica "NULL" [] [] "NULL" "NULL" "NULL" "NULL" 0)
+    Nothing -> return (Musica "NULL" "NULL" [] [] "NULL" "NULL" "NULL" "NULL" 0) 
+
+
+getMusicaPorNome :: String -> IO Musica
+getMusicaPorNome nomeAlvo = do
+  musicas <- getMusicas
+  case findMusicaByName nomeAlvo musicas of
+    Just musicaEncontrada -> return musicaEncontrada
+    Nothing -> return (Musica "NULL" "NULL" [] [] "NULL" "NULL" "NULL" "NULL" 0)
 
 findMusicaByID :: String -> [Musica] -> Maybe Musica
 findMusicaByID _ [] = Nothing  -- Se a lista estiver vazia, retornar Nothing
@@ -35,6 +43,11 @@ findMusicaByID idAlvo (musica:resto)
   | idAlvo == idMusica musica = Just musica  -- Se o ID for encontrado, retornar Just com a música
   | otherwise = findMusicaByID idAlvo resto  -- Caso contrário, continuar a busca na lista restante
 
+findMusicaByName :: String -> [Musica] -> Maybe Musica
+findMusicaByName _ [] = Nothing  -- Se a lista estiver vazia, retornar Nothing
+findMusicaByName nomeAlvo (musica:resto)
+  | nomeAlvo == nome musica = Just musica  -- Se o ID for encontrado, retornar Just com a música
+  | otherwise = findMusicaByID nomeAlvo resto  --
 
 
 
@@ -42,7 +55,7 @@ findMusicaByID idAlvo (musica:resto)
 filtrarMusicasPorParticipante :: String -> IO [Musica]
 filtrarMusicasPorParticipante nomeParticipante = do
   musicas <- getMusicas
-  return (filter (\musica -> nomeParticipante `elem` participantes musica) musicas)
+  return (filterByParticipante nomeParticipante musicas[])
 
 filterByParticipante :: String -> [Musica] -> [Musica] -> [Musica]
 filterByParticipante _ [] result = result
@@ -76,3 +89,19 @@ filtrarMusicasPorTrechoLetra trecho musicas =
       if isPrefixOf needle haystack
         then True
         else isInfixOf needle xs
+
+{-Função Pública-}   
+filtrarMusicasPorInstrumento :: String -> IO [Musica]
+filtrarMusicasPorInstrumento nomeInstrumento = do
+  musicas <- getMusicas
+  return (filterByInstrumento nomeInstrumento musicas [])
+
+filterByInstrumento :: String -> [Musica] -> [Musica] -> [Musica]
+filterByInstrumento _ [] result = result
+filterByInstrumento instrumento (musica:musicasRestantes) result
+  | instrumento `elem` instrumentos musica = filterByInstrumento instrumento musicasRestantes (musica:result)
+  | otherwise = filterByInstrumento instrumento musicasRestantes result
+
+{-Função Pública-}   
+
+

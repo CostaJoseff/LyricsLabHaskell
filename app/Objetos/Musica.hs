@@ -6,6 +6,7 @@ module Objetos.Musica where
 
   data Musica = Musica {
     idMusica :: String -- colocar como String
+    , nome :: String
     , instrumentos :: [String]
     , participantes :: [String]
     , ritmo :: String
@@ -19,9 +20,10 @@ module Objetos.Musica where
   instance ToJSON Musica
   instance FromJSON Musica
   instance Show Musica where
-    show (Musica idMusica instrumentos participantes ritmo lancamento letra nomeBanda avaliacao) =
+    show (Musica idMusica nome instrumentos participantes ritmo lancamento letra nomeBanda avaliacao) =
         "________________________________________\n" ++
         "ID da Música: " ++ idMusica ++ "\n" ++
+        "Nome : " ++ nome ++ "\n" ++
         "Instrumentos: " ++ show instrumentos ++ "\n" ++
         "Participantes: " ++ show participantes ++ "\n" ++
         "Ritmo: " ++ ritmo ++ "\n" ++

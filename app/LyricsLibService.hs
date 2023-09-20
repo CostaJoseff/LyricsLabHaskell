@@ -7,6 +7,7 @@ import Artistas.ArtistaService as AServ
 import Objetos.Artista
 
 import Bandas.BandaService
+import Musicas.MusicaService
 
 
 -- Funcoes Artistas
@@ -49,11 +50,11 @@ filtrarBandasPorGenero genero = return [("")]
 
 --Funcoes Musica
 
-buscarMusica:: String -> IO String
-buscarMusica nomeMusica = return ("")
+getMusicaPorNome :: String -> IO String
+getMusicaPorNome nomeMusica = return ("")
 
-filtrarMusicasPorTrecho:: String -> IO [String]
-filtrarMusicasPorTrecho trecho = return [("")]
+filtrarMusicasPorTrechoLetra:: String -> IO [String]
+filtrarMusicasPorTrechoLetra trecho = return [("")]
 
 
 filtrarMusicasPorInstrumento:: String -> IO [String]
@@ -61,3 +62,6 @@ filtrarMusicasPorInstrumento instrumento = return [("")]
 
 filtrarMusicasPorRitmo:: String -> IO [String]
 filtrarMusicasPorRitmo ritmo = return [("")]
+
+filtrarMusicasPorParticipante :: String -> IO [String]
+filtrarMusicasPorParticipante participante = return [("")]
